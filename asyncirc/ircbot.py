@@ -116,7 +116,7 @@ class IRCBot(IRCClient):
                 self._in_queue.task_done()
             except queue.Empty as e: pass
             except Exception as e:
-                logging.debug(e.args)
+                logging.exception("Error while handling message " + str(args))
 
     def start(self):
         IRCClient.start(self)
