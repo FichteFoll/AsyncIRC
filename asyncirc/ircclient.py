@@ -99,7 +99,7 @@ class IRCClient(object):
                         try:
                             self._socket.send(msg.encode("UTF-8"))
                             self._out_queue.task_done()
-                        except BlockingIOError:
+                        except (BlockingIOError, ssl.SSLWantWriteError):
                             pass
                         else:
                             break
@@ -124,7 +124,7 @@ class IRCClient(object):
                 if data:
                     for line in data:
                         self._process_data(line.decode(encoding='UTF-8', errors='ignore'))
-            except BlockingIOError as e:
+            except (BlockingIOError, ssl.SSLWantReadError) as e:
                 pass
         logging.info("Receive loop stopped")
 
